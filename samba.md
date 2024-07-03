@@ -45,26 +45,8 @@ vim /etc/samba/smb.conf
 
 Add the following sections at the end of the file:
 ```ini
-[zfs-pool]
-path = /zfs-pool
-valid users = @sambashare
-read only = yes
-browsable = yes
-
-[francis]
-path = /zfs-pool/cloud/francis
-valid users = francis
-read only = no
-browsable = yes
-
-[leyna]
-path = /zfs-pool/cloud/leyna
-valid users = leyna
-read only = no
-browsable = yes
-
-[shared]
-path = /zfs-pool/cloud/shared
+[cloud]
+path = /zfs-pool/cloud
 valid users = @sambashare
 read only = no
 browsable = yes
@@ -74,14 +56,16 @@ browsable = yes
 Ensure both the folders have the correct permissions:
 
 ```bash
-chown -R :sambashare /zfs-pool/cloud # change owner to sambashare
-chmod -R 770 /zfs-pool/cloud # change mode, set permissions owner (5 - rx), group (5 - rx), others (0 - none).
+chown -R francis:sambashare /zfs-pool/cloud/francis # Sets francis as the owner and sambashare as the group for francis's directory.
+chmod -R 750 /zfs-pool/cloud/francis
 
-chown -R francis /zfs-pool/cloud/francis # change owner to francis
-chmod -R 750 /zfs-pool/cloud/francis # change mode, set permissions owner (7 - rwx), group (5 - rx), others (0 - none).
+chown -R leyna:sambashare /zfs-pool/cloud/leyna # Sets leyna as the owner and sambashare as the group for leyna's directory.
+chmod -R 750 /zfs-pool/cloud/leyna
 
-chown -R francis /zfs-pool/cloud/leyna # change owner to leyna
-chmod -R 750 /zfs-pool/cloud/leyna # change mode, set permissions owner (7 - rwx), group (5 - rx), others (0 - none).
+# 750 permissions:
+  # 7 (Owner): Full permissions (read, write, execute).
+  # 5 (Group): Read and execute permissions.
+  # 0 (Others): No permissions.
 ```
 
 ### 6. Restart Samba:
