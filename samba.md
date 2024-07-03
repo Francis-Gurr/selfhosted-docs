@@ -88,6 +88,6 @@ chmod -R 750 /zfs-pool/cloud/leyna # change mode, set permissions owner (7 - rwx
 Restart the Samba services to apply the changes:
 
 ```bash
-systemctl restart smbd
-systemctl restart nmbd
+systemctl restart smbd # samba daemon
+systemctl restart nmbd # NetBIOS name server daemon for Samba
 ```
