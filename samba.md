@@ -12,7 +12,9 @@ apt install samba
 
 ### 2. Create samba users:
 Create users with `useradd`.
+
 `-M`: Ensures that no home directory is created for the user. This is useful when creating system users who do not need a home directory for interactive login.
+
 `-s /sbin/nologin`: Specifies the shell for the user. `/sbin/nologin` is a special shell that prevents the user from logging into the system interactively. This is commonly used for service accounts or accounts that only need access for specific purposes, such as running services or accessing Samba shares.
 ```bash
 useradd -M -s /sbin/nologin francis
