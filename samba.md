@@ -52,6 +52,9 @@ path = /zfs-pool/cloud
 valid users = @sambashare
 read only = no
 browsable = yes
+force group = sambashare
+create mask = 0770
+directory mask = 0770
 ```
 
 ### 5. Set Folder Permissions:
@@ -64,10 +67,31 @@ chmod -R 750 /zfs-pool/cloud/francis
 chown -R leyna:sambashare /zfs-pool/cloud/leyna # Sets leyna as the owner and sambashare as the group for leyna's directory.
 chmod -R 750 /zfs-pool/cloud/leyna
 
+chown -R :sambashare /zfs-pool/cloud/shared
+chmod -R 770 /zfs-pool/cloud/shared
+
 # 750 permissions:
   # 7 (Owner): Full permissions (read, write, execute).
   # 5 (Group): Read and execute permissions.
   # 0 (Others): No permissions.
+```
+
+### 6. Configure ACLs
+Use Access Control Lists (ACLs) to define default permissions for all new files and directories in /zfs-pool/cloud/shared.
+
+```
+# Set the setgid (set group ID) bit on the cloud/shared directory.
+# This ensures that new files and subdirectories created within cloud/shared inherit the group ownership (sambashare).
+chmod g+s /zfs-pool/cloud/shared
+
+# Set default ACLs for the shared directory:
+setfacl -R -m d:g:sambashare:rwX /zfs-pool/cloud/shared
+
+# Apply the same permissions to existing files:
+setfacl -R -m g:sambashare:rwX /zfs-pool/cloud/shared
+
+# Verify ACLs:
+getfacl /zfs-pool/cloud/shared
 ```
 
 ### 6. Restart Samba:
