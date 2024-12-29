@@ -80,6 +80,8 @@ chmod -R 770 /zfs-pool/cloud/shared
 Use Access Control Lists (ACLs) to define default permissions for all new files and directories in /zfs-pool/cloud/shared.
 
 ```
+apt install acl
+
 # Set the setgid (set group ID) bit on the cloud/shared directory.
 # This ensures that new files and subdirectories created within cloud/shared inherit the group ownership (sambashare).
 chmod g+s /zfs-pool/cloud/shared
@@ -94,7 +96,7 @@ setfacl -R -m g:sambashare:rwX /zfs-pool/cloud/shared
 getfacl /zfs-pool/cloud/shared
 ```
 
-### 6. Restart Samba:
+### 7. Restart Samba:
 Restart the Samba services to apply the changes:
 
 ```bash
